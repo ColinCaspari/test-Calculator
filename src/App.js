@@ -6,7 +6,7 @@ function App() {
 
             <table>
                 <tr>
-                    <td onClick={appendOperation(7)}>7</td>
+                    <td onClick="appendOperation(7)">7</td>
                     <td onclick="appendOperation(8)">8</td>
                     <td onclick="appendOperation(9)">9</td>
                     <td onclick="appendOperation(' + ')" className="operator">+</td>
