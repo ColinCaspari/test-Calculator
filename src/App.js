@@ -1,51 +1,83 @@
 import React, { Component } from 'react';
+import './App.css';
+import ResultArea from './components/ResultArea';
+import ButtonPanel from './components/ButtonPanel';
+
+class App extends Component {
+    constructor() {
+        super();
+
+        this.state = {
+            result: ""
+        }
+    }
+
+    onClick = button => {
+
+        if (button === "=") {
+            this.calculate()
+        }
+
+        else if (button === "C") {
+            this.reset()
+        }
+        else if (button === "CE") {
+            this.backspace()
+        }
+
+        else {
+            this.setState({
+                result: this.state.result + button
+            })
+        }
+    };
 
 
-class ButtonPanel extends Component {
+    calculate = () => {
+        var checkResult = ''
+        if (this.state.result.includes('--')) {
+            checkResult = this.state.result.replace('--', '+')
+        }
+
+        else {
+            checkResult = this.state.result
+        }
+
+        try {
+            this.setState({
+                // eslint-disable-next-line
+                result: (eval(checkResult) || "") + ""
+            })
+        } catch (e) {
+            this.setState({
+                result: "error"
+            })
+
+        }
+    };
+
+    reset = () => {
+        this.setState({
+            result: ""
+        })
+    };
+
+    backspace = () => {
+        this.setState({
+            result: this.state.result.slice(0, -1)
+        })
+    };
+
     render() {
         return (
-            <>
-                <div id='full-grid'>
-                    <div id='result'>123</div>
-
-                    <div className="component-button-panel">
-                        <div>
-                            <button id='clear-button'>C</button>
-                            <button id='operator'>/</button>
-                        </div>
-                        <div>
-                            <button>7</button>
-                            <button>8</button>
-                            <button>9</button>
-                            <button id='operator'>*</button>
-                        </div>
-                        <div>
-                            <button>4</button>
-                            <button>5</button>
-                            <button>6</button>
-                            <button id='operator'>-</button>
-                        </div>
-                        <div>
-                            <button>1</button>
-                            <button>2</button>
-                            <button>3</button>
-                            <button id='operator'>+</button>
-                        </div>
-                        <div>
-                            <button>0</button>
-                            <button>,</button>
-                            <button id='result-button'>=</button>
-                        </div>
-                    </div>
+            <div>
+                <div className="calculator-body">
+                    <ResultArea result={this.state.result} />
+                    <ButtonPanel onClick={this.onClick} />
                 </div>
-            </>
+            </div>
         );
     }
 }
 
-export default ButtonPanel;
-
-
-
-
-
+export default App;
